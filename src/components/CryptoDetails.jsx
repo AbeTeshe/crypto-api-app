@@ -8,6 +8,7 @@ import { MoneyCollectOutlined, DollarCircleOutlined, FundOutlined, ExclamationCi
 
 import {useGetCryptoDetailsQuery, useGetCryptoHistoryQuery} from '../services/cryptoApi';
 import LineChart from './LineChart';
+import Loader from './Loader';
 
 
 const {Title, Text} =Typography;
@@ -16,40 +17,39 @@ const {Option} = Select;
 
 const CryptoDetails = () => {
   const {coinId} = useParams();
-  const [timePeriod, setTimePeriod] = useState('7d');
+  const [timeperiod, setTimeperiod] = useState('7d');
   const {data, isFetching} = useGetCryptoDetailsQuery(coinId);
-  const {data: coinHistory} = useGetCryptoDetailsQuery({coinId, timePeriod});
+  const {data: coinHistory} = useGetCryptoHistoryQuery({coinId, timeperiod});
 
   const cryptoDetails = data?.data?.coin;
-
-  console.log(cryptoDetails);
-
-  if(isFetching) return 'Loading...';
+  console.log(timeperiod);
+  console.log(coinHistory);
+  if(isFetching) return <Loader/>;
 
   const time = ['3h', '24h', '7d', '30d', '1y', '3m', '3y', '5y'];
 
   //const stats = [];
   const stats = [
-    { title: 'Price to USD', value: `$ ${cryptoDetails?.price}`, icon: <DollarCircleOutlined /> },
+    { title: 'Price to USD', value: `$ ${millify(cryptoDetails?.price)}`, icon: <DollarCircleOutlined /> },
     { title: 'Rank', value: cryptoDetails?.rank, icon: <NumberOutlined /> },
-    { title: '24h Volume', value: `$ ${cryptoDetails?.volume}`, icon: <ThunderboltOutlined /> },
-    { title: 'Market Cap', value: `$ ${cryptoDetails?.marketCap}`, icon: <DollarCircleOutlined /> },
-    { title: 'All-time-high(daily avg.)', value: `$ ${cryptoDetails?.allTimeHigh.price}`, icon: <TrophyOutlined /> },
+    { title: '24h Volume', value: `$ ${cryptoDetails?.hVolume}`, icon: <ThunderboltOutlined /> },
+    { title: 'Market Cap', value: `$ ${millify(cryptoDetails?.marketCap)}`, icon: <DollarCircleOutlined /> },
+    { title: 'All-time-high(daily avg.)', value: `$ ${millify(cryptoDetails?.allTimeHigh.price)}`, icon: <TrophyOutlined /> },
   ];
 
   const genericStats = [
-    { title: 'Number Of Markets', value: cryptoDetails?.numberOfMarkets, icon: <FundOutlined /> },
+    { title: 'Number Of Markets', value: millify(cryptoDetails?.numberOfMarkets), icon: <FundOutlined /> },
     { title: 'Number Of Exchanges', value: cryptoDetails?.numberOfExchanges, icon: <MoneyCollectOutlined /> },
     { title: 'Aprroved Supply', value: cryptoDetails?.supply.confirmed ? <CheckOutlined /> : <StopOutlined />, icon: <ExclamationCircleOutlined /> },
-    { title: 'Total Supply', value: `$ ${cryptoDetails?.supply?.total}`, icon: <ExclamationCircleOutlined /> },
-     { title: 'Circulating Supply', value: `$ ${cryptoDetails?.supply?.circulating}`, icon: <ExclamationCircleOutlined /> },
+    { title: 'Total Supply', value: `$ ${millify(cryptoDetails?.supply?.total)}`, icon: <ExclamationCircleOutlined /> },
+     { title: 'Circulating Supply', value: `$ ${millify(cryptoDetails?.supply?.circulating)}`, icon: <ExclamationCircleOutlined /> },
   ];
   
   return (
     <Col className="coin-detail-container">
       <Col className="coin-heading-container">
         <Title level={2} className="coin-name">
-          {cryptoDetails?.name} ({cryptoDetails?.slug}) Price
+          {cryptoDetails?.name} ({cryptoDetails?.symbol}) Price
         </Title>
         <p>
           {cryptoDetails?.name} live price in US dollars.
@@ -60,7 +60,7 @@ const CryptoDetails = () => {
           defaultValue="7d" 
           className="select-timeperiod" 
           placeholder="Select Time Period"
-          onChange={(value) => setTimePeriod(value)}
+          onChange={(value) => setTimeperiod(value)}
       >
         {time.map((date) => <Option key={date}>{date}</Option>)}
       </Select>

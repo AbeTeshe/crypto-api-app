@@ -38,17 +38,17 @@ const Navbar = () => {
                 <MenuOutlined />
             </Button>
         </div>
-        {!activeMenu && (<Menu theme="dark">
-            <Menu.Item icon={<HomeOutlined />}>
-                <Link to="/">Home</Link>
+        {!activeMenu && (<Menu theme="dark" >
+            <Menu.Item icon={<HomeOutlined />} className="menu-container">
+                <Link to="/" >Home</Link>
             </Menu.Item>
-            <Menu.Item icon={<FundOutlined />}>
+            <Menu.Item icon={<FundOutlined />} className="menu-container">
                 <Link to="/cryptocurrencies">Cryptocurrencies</Link>
             </Menu.Item>
-            <Menu.Item icon={<MoneyCollectOutlined />}>
-                <Link to="/exchanges">Exchanges</Link>
+            <Menu.Item icon={<MoneyCollectOutlined />} className="menu-container">
+                <Link to="/news">Exchanges</Link>
             </Menu.Item>
-            <Menu.Item icon={<BulbOutlined />}>
+            <Menu.Item icon={<BulbOutlined />} className="menu-container">
                 <Link to="/news">News</Link>
             </Menu.Item>
         </Menu>)}

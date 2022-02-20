@@ -13,10 +13,6 @@
     box-sizing: border-box;
 }
 
-a:hover{
-    color: var(--pink) !important;
-}
-
 .app{
     display: flex;
     overflow: hidden;
@@ -66,7 +62,9 @@ a:hover{
     background-color: var(--bgSecondary) !important;
     border: none !important;
 }
-
+.menu-container:hover {
+    background-color: var(--pink) !important;
+}
 .loader{
     height: 81vh;
     display: flex;
@@ -372,6 +370,7 @@ width: 70%;
 .footer {
     background-color: #001529;
     display: flex;
+    width: 100%;
     flex-direction: column;
     padding: 20px;
     align-items: center;
